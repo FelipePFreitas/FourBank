@@ -10,5 +10,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, UUID> {
 
     Optional<ClienteEntity> findByEmail (String email);
 
+    Optional<ClienteEntity> findByDocumento(String documento);
+
 
 }

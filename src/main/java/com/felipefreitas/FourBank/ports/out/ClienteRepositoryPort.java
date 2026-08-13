@@ -18,5 +18,7 @@ public interface ClienteRepositoryPort {
 
     Optional<Cliente> findByEmail (String email);
 
+    Optional<Cliente> findByDocumento (String documento);
+
 
 }
