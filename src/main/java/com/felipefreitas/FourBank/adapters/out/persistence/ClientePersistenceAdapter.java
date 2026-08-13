@@ -40,4 +40,9 @@ public class ClientePersistenceAdapter implements ClienteRepositoryPort {
     public void deleteById(UUID id) {
         clienteRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<Cliente> findByEmail(String email) {
+        return Optional.empty();
+    }
 }
