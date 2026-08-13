@@ -15,14 +15,16 @@ public enum ErrorEnum {
     CPF_INVALIDO(400, 7, "O CPF informado é inválido"),
     CNPJ_INVALIDO(400, 8, "O CNPJ informado é inválido"),
     ACAO_NAO_PERMITIDA(400, 9, "Ação não permitida para o estado atual"),
+    EMAIL_INVALIDO(401, 10, "O Email informado é inválido"),
+    SENHA_INVALIDA(401, 11, "Formato de senha inválida"),
 
     // 100-199: Erros de Cliente (Pessoa Física e Jurídica)
     CLIENTE_NAO_ENCONTRADO(404, 100, "Cliente não encontrado"),
     EMAIL_JA_CADASTRADO(409, 101, "O e-mail informado já está cadastrado para outro cliente"),
-    CPF_JA_CADASTRADO(409, 102, "O CPF informado já está cadastrado no sistema"),
-    CNPJ_JA_CADASTRADO(409, 103, "O CNPJ informado já está cadastrado no sistema"),
-    DOCUMENTO_JA_CADASTRADO(409, 104, "O documento informado já está vinculado a uma conta"),
-    CLIENTE_INATIVO(400, 105, "O cadastro do cliente encontra-se inativo ou bloqueado"),
+    CPF_JA_CADASTRADO(409, 103, "O CPF informado já está cadastrado no sistema"),
+    CNPJ_JA_CADASTRADO(409, 104, "O CNPJ informado já está cadastrado no sistema"),
+    DOCUMENTO_JA_CADASTRADO(409, 105, "O documento informado já está vinculado a uma conta"),
+    CLIENTE_INATIVO(400, 106, "O cadastro do cliente encontra-se inativo ou bloqueado"),
 
     // 200-299: Erros de Conta Bancária
     CONTA_NAO_ENCONTRADA(404, 200, "Conta bancária não encontrada"),

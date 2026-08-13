@@ -10,7 +10,6 @@ public record ClienteRequestDTO(
         String nome,
 
         @NotBlank(message = "Email é obrigatório")
-        @Email(message = "Email em formato inválido")
         String email,
 
         @NotBlank(message = "Senha é obrigatória")

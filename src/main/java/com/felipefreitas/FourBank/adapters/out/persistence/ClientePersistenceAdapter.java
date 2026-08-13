@@ -21,19 +21,19 @@ public class ClientePersistenceAdapter implements ClienteRepositoryPort {
 
     @Override
     public Cliente save(Cliente cliente) {
-        ClienteEntity clienteEntity = clienteMapper.toClienteEntity(cliente);
+        ClienteEntity clienteEntity = clienteMapper.toEntity(cliente);
         ClienteEntity clienteSalvo = clienteRepository.save(clienteEntity);
-        return clienteMapper.toClienteDomain(clienteSalvo);
+        return clienteMapper.toDomain(clienteSalvo);
     }
 
     @Override
     public Optional<Cliente> findById(UUID id) {
-        return clienteRepository.findById(id).map(clienteMapper::toClienteDomain);
+        return clienteRepository.findById(id).map(clienteMapper::toDomain);
     }
 
     @Override
     public List<Cliente> findAll() {
-        return clienteRepository.findAll().stream().map(clienteMapper::toClienteDomain).toList();
+        return clienteRepository.findAll().stream().map(clienteMapper::toDomain).toList();
     }
 
     @Override
@@ -42,7 +42,15 @@ public class ClientePersistenceAdapter implements ClienteRepositoryPort {
     }
 
     @Override
-    public Optional<Cliente> findByEmail(String email) {
-        return Optional.empty();
-    }
+        public Optional<Cliente> findByEmail(String email) {
+            return clienteRepository.findByEmail(email)
+                    .map(clienteMapper::toDomain);
+        }
+
+
+    @Override
+        public Optional<Cliente> findByDocumento(String cpf) {
+            return clienteRepository.findByDocumento(cpf)
+                    .map(clienteMapper::toDomain);
+        }
 }
