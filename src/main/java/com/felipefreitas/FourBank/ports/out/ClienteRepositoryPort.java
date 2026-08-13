@@ -15,4 +15,8 @@ public interface ClienteRepositoryPort {
     List<Cliente> findAll ();
 
     void deleteById(UUID id);
+
+    Optional<Cliente> findByEmail (String email);
+
+
 }
