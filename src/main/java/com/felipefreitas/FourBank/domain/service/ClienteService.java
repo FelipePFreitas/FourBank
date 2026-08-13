@@ -13,11 +13,13 @@ import com.felipefreitas.FourBank.ports.in.cliente.ListarTodosOsClienteUseCase;
 import com.felipefreitas.FourBank.ports.out.ClienteRepositoryPort;
 import com.felipefreitas.FourBank.ports.out.PasswordEncoderPort;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 @AllArgsConstructor
 public class ClienteService implements BuscarClienteIdUseCase, CadastrarClientePFUseCase, DeletarClientePorIdUseCase, ListarTodosOsClienteUseCase {
 
@@ -25,12 +27,14 @@ public class ClienteService implements BuscarClienteIdUseCase, CadastrarClienteP
     private final PasswordEncoderPort passwordEncoderPort;
 
     @Override
+    @Transactional(readOnly = true)
     public Cliente buscarClientePorId(UUID id) {
 
         return clienteRepositoryPort.findById(id).orElseThrow(() -> new BaseException(ErrorEnum.CLIENTE_NAO_ENCONTRADO));
     }
 
     @Override
+    @Transactional
     public Cliente cadastrarClientePF(Cliente cliente) {
 
         if (!EmailValidatorUtils.isValidEmail(cliente.getEmail())) {
@@ -60,12 +64,14 @@ public class ClienteService implements BuscarClienteIdUseCase, CadastrarClienteP
     }
 
     @Override
+    @Transactional
     public void deletarClientePorId(UUID id) {
         buscarClientePorId(id);
         clienteRepositoryPort.deleteById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Cliente> listarTodosOsClientes() {
         return clienteRepositoryPort.findAll();
     }
