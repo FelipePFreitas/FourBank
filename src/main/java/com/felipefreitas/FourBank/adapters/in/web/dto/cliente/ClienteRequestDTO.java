@@ -13,7 +13,7 @@ public record ClienteRequestDTO(
         String email,
 
         @NotBlank(message = "Senha é obrigatória")
-        @Size(min = 6, message = "A senha deve conter no mínimo 6 caracteres ")
+        @Size(min = 6,max = 12, message = "A senha deve conter no mínimo 6 caracteres ")
         String senha,
 
         @NotBlank(message = "Documento é obrigatório")
@@ -26,7 +26,7 @@ public record ClienteRequestDTO(
         String numero,
 
         @NotBlank(message = "Cep obrigatório")
-        @Size(min = 8)
+        @Size(min = 8,max = 10)
         String cep,
 
         @NotBlank(message = "Bairro obrigatório")
