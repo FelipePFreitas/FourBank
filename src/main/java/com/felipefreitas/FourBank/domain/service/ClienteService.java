@@ -58,6 +58,7 @@ public class ClienteService implements BuscarClienteIdUseCase, CadastrarClienteP
         }
 
         String senhaCriptografada = passwordEncoderPort.encode(cliente.getSenha());
+
         cliente.setSenha(senhaCriptografada);
 
         return clienteRepositoryPort.save(cliente);

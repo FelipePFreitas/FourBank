@@ -29,8 +29,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Rotas públicas de cadastro e login
-                        .requestMatchers(HttpMethod.POST, "/api/v1/cliente").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/cliente").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
 
                         // Rotas públicas da documentação Swagger / OpenAPI
                         .requestMatchers(
