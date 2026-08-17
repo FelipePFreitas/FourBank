@@ -1,6 +1,5 @@
 package com.felipefreitas.FourBank.adapters.in.web.dto.cliente;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
