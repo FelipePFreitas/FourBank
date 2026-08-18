@@ -1,5 +1,7 @@
 package com.felipefreitas.FourBank.adapters.in.web.dto.cliente;
 
+import com.felipefreitas.FourBank.adapters.in.web.dto.conta.ContaResponseDTO;
+
 import java.util.UUID;
 
 public record ClienteResponseDTO(
@@ -13,6 +15,7 @@ public record ClienteResponseDTO(
         String cep,
         String bairro,
         String cidade,
-        String estado
+        String estado,
+        ContaResponseDTO conta
 ) {
 }
