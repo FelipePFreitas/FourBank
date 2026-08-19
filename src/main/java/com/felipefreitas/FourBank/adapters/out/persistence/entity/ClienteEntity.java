@@ -55,6 +55,9 @@ public class ClienteEntity implements UserDetails {
     @Column(nullable = false, length = 2)
     private String estado;
 
+    @Column(name = "status", nullable = false)
+    private boolean ativo;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

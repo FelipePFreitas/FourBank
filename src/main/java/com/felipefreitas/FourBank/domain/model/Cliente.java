@@ -22,6 +22,7 @@ public class Cliente {
     private String bairro;
     private String cidade;
     private String estado;
+    private boolean ativo;
 
 }
 
