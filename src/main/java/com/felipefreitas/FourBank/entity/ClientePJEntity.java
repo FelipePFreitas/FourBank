@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cliente_pj")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

@@ -10,7 +10,6 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cliente_pf")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
