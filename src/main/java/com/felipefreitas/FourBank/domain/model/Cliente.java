@@ -22,7 +22,8 @@ public class Cliente {
     private String bairro;
     private String cidade;
     private String estado;
-    private boolean ativo;
+    private boolean ativo = true;
+    private Conta conta;
 
 }
 

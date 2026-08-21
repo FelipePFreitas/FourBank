@@ -6,7 +6,7 @@ import com.felipefreitas.FourBank.domain.enums.ErrorEnum;
 import com.felipefreitas.FourBank.domain.exception.BaseException;
 import com.felipefreitas.FourBank.domain.model.Cliente;
 import com.felipefreitas.FourBank.ports.in.autenticacao.AutenticarLoginUsecase;
-import com.felipefreitas.FourBank.ports.out.ClienteRepositoryPort;
+import com.felipefreitas.FourBank.ports.out.ClientePort;
 import com.felipefreitas.FourBank.ports.out.JwtPort;
 import com.felipefreitas.FourBank.ports.out.PasswordEncoderPort;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class AutenticacaoService implements AutenticarLoginUsecase {
 
-    private final ClienteRepositoryPort clienteRepositoryPort;
+    private final ClientePort clientePort;
     private final PasswordEncoderPort passwordEncoderPort;
     private final JwtPort jwtPort;
 
@@ -26,7 +26,7 @@ public class AutenticacaoService implements AutenticarLoginUsecase {
     public AutenticacaoResponseDTO autenticarLogin(AutenticacaoRequestDTO request) {
 
         // 1. Busca o cliente cadastrado
-        Cliente cliente = clienteRepositoryPort.findByEmail(request.email())
+        Cliente cliente = clientePort.findByEmail(request.email())
                 .orElseThrow(() -> new BaseException(ErrorEnum.CREDENCIAIS_INVALIDAS));
 
         // 2. Valida o hash da senha

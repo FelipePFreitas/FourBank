@@ -4,12 +4,14 @@ import com.felipefreitas.FourBank.domain.model.Conta;
 
 import java.util.Optional;
 
-public interface ContaRepositoryPort {
+public interface ContaPort {
 
     Conta save(Conta conta);
 
     boolean existsByNumeroConta(String numeroConta);
 
     Optional<Conta> findByNumeroConta (String numeroConta);
+
+    Optional<Conta> findByChavePix(String chavePix);
 
 }

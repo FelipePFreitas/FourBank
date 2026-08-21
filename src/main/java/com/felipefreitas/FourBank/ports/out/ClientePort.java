@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ClienteRepositoryPort {
+public interface ClientePort {
 
     Cliente save(Cliente cliente);
 

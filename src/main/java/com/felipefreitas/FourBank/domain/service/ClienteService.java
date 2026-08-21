@@ -10,8 +10,8 @@ import com.felipefreitas.FourBank.domain.util.CpfCnpjValidatorUtils;
 import com.felipefreitas.FourBank.domain.util.EmailValidatorUtils;
 import com.felipefreitas.FourBank.domain.util.PasswordValidatorUtils;
 import com.felipefreitas.FourBank.ports.in.cliente.CadastrarClientePFUseCase;
-import com.felipefreitas.FourBank.ports.out.ClienteRepositoryPort;
-import com.felipefreitas.FourBank.ports.out.ContaRepositoryPort;
+import com.felipefreitas.FourBank.ports.out.ClientePort;
+import com.felipefreitas.FourBank.ports.out.ContaPort;
 import com.felipefreitas.FourBank.ports.out.PasswordEncoderPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ClienteService implements CadastrarClientePFUseCase {
 
-    private final ClienteRepositoryPort clienteRepositoryPort;
-    private final ContaRepositoryPort contaRepositoryPort;
+    private final ClientePort clientePort;
+    private final ContaPort contaPort;
     private final PasswordEncoderPort passwordEncoderPort;
 
     @Override
@@ -43,11 +43,11 @@ public class ClienteService implements CadastrarClientePFUseCase {
             throw new BaseException(ErrorEnum.CPF_INVALIDO);
         }
 
-        if (clienteRepositoryPort.findByEmail(cliente.getEmail()).isPresent()) {
+        if (clientePort.findByEmail(cliente.getEmail()).isPresent()) {
             throw new BaseException(ErrorEnum.EMAIL_JA_CADASTRADO);
         }
 
-        if (clienteRepositoryPort.findByDocumento(cliente.getDocumento()).isPresent()) {
+        if (clientePort.findByDocumento(cliente.getDocumento()).isPresent()) {
             throw new BaseException(ErrorEnum.CPF_JA_CADASTRADO);
         }
 
@@ -55,13 +55,13 @@ public class ClienteService implements CadastrarClientePFUseCase {
 
         cliente.setSenha(senhaCriptografada);
 
-        Cliente clienteSalvo = clienteRepositoryPort.save(cliente);
+        Cliente clienteSalvo = clientePort.save(cliente);
 
         String numeroConta;
 
         do {
             numeroConta = ContaUtil.gerarNumeroConta();
-        } while (contaRepositoryPort.existsByNumeroConta(numeroConta));
+        } while (contaPort.existsByNumeroConta(numeroConta));
 
 
         Conta conta = Conta.builder()
@@ -72,7 +72,9 @@ public class ClienteService implements CadastrarClientePFUseCase {
                 .tipoConta(TipoConta.PF)
                 .build();
 
-        contaRepositoryPort.save(conta);
+        contaPort.save(conta);
+
+        clienteSalvo.setConta(conta);
 
         return clienteSalvo;
     }

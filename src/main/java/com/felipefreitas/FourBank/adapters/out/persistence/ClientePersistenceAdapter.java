@@ -4,7 +4,7 @@ import com.felipefreitas.FourBank.adapters.out.persistence.entity.ClienteEntity;
 import com.felipefreitas.FourBank.adapters.out.persistence.mapper.ClienteMapper;
 import com.felipefreitas.FourBank.adapters.out.persistence.repository.ClienteRepository;
 import com.felipefreitas.FourBank.domain.model.Cliente;
-import com.felipefreitas.FourBank.ports.out.ClienteRepositoryPort;
+import com.felipefreitas.FourBank.ports.out.ClientePort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class ClientePersistenceAdapter implements ClienteRepositoryPort {
+public class ClientePersistenceAdapter implements ClientePort {
 
     private final ClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;

@@ -1,7 +1,9 @@
 package com.felipefreitas.FourBank.adapters.out.persistence.repository;
 
 import com.felipefreitas.FourBank.adapters.out.persistence.entity.ContaEntity;
+import com.felipefreitas.FourBank.domain.model.Conta;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,4 +15,7 @@ public interface ContaRepository extends JpaRepository<ContaEntity, UUID> {
     boolean existsByNumeroConta (String numeroConta);
 
     Optional<ContaEntity> findByNumeroConta (String numeroConta);
+
+    Optional<ContaEntity> findByChavesPixContaining(String chavePix);
+
 }

@@ -40,7 +40,10 @@ public enum ErrorEnum {
     CHAVE_PIX_NAO_ENCONTRADA(404, 302, "Chave PIX não encontrada"),
     CHAVE_PIX_JA_CADASTRADA(409, 303, "A chave PIX informada já pertence a outra conta"),
     TRANSACAO_MESMA_CONTA(422, 304, "Não é permitido realizar transferências para a própria conta origem"),
-    TRANSACAO_JA_ESTORNADA(422, 305, "A transação selecionada já foi estornada anteriormente");
+    TRANSACAO_JA_ESTORNADA(422, 305, "A transação selecionada já foi estornada anteriormente"),
+    CHAVE_PIX_NULO_BRANCA(400,306 ,"Não é permitido chave nula ou branca"),
+    CARACTERES_ACIMA(400, 307,"Caracteres da chave pix acima do permitido" ),
+    LIMITE_CHAVE_PIX(400, 308, "Limite de chaves pix atingido");
 
     private final int httpStatus;
     private final int errorCode;
