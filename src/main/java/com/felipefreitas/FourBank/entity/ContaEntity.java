@@ -30,8 +30,12 @@ public class ContaEntity {
     @Column(nullable = false)
     private BigDecimal saldo;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "cliente_id", nullable = false, unique = true)
-    private ClienteEntity cliente;
+    @OneToOne
+    @JoinColumn(name = "cliente_pf_id", referencedColumnName = "id", unique = true)
+    private ClientePFEntity clientePF;
+
+    @OneToOne
+    @JoinColumn(name = "cliente_pj_id", referencedColumnName = "id", unique = true)
+    private ClientePJEntity clientePJ;
 
 }

@@ -16,6 +16,7 @@ public enum ErrorEnum {
     TIPO_CLIENTE_INVALIDO(400, 9, "Tipo de cliente inválido"),
     CNPJ_NULO_BRANCO(400, 10, "CNPJ não pode ser nulo ou em branco"),
     CPF_JA_CADASTRADO(409, 204, "CPF já cadastrado"),
+    LOGIN_JA_CADASTRADO(409, 205, "Login já cadastrado"),
 
     // Erros de Conta (faixa 100-199)
     SALDO_NEGATIVO_NULO(400, 100, "Saldo não pode ser null ou menor que zero"),

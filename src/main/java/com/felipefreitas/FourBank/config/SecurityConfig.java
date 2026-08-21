@@ -33,6 +33,8 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/webjars/**",
             "/auth/login",
+            "/clientes/pf",
+            "/clientes/pj",
             "/actuator/health",
             "/actuator/info"
     };

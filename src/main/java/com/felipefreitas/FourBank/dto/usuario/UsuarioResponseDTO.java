@@ -5,6 +5,7 @@ import java.util.UUID;
 public record UsuarioResponseDTO(
         UUID id,
         String login,
-        ClienteResponseDTO cliente
+        UUID clientePfId,
+        UUID clientePjId
 ) {
 }
