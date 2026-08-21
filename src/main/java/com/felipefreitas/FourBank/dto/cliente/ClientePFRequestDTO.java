@@ -9,10 +9,6 @@ public record ClientePFRequestDTO(
         String nome,
 
         @NotBlank(message = "Data de nascimento é obrigatória")
-        String dataNascimento,
-
-        @Valid
-        @NotNull(message = "Dados base do cliente são obrigatórios")
-        ClienteRequestDTO cliente
+        String dataNascimento
 ) {
 }

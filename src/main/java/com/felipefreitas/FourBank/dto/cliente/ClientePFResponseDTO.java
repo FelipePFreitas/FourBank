@@ -5,7 +5,7 @@ import java.util.UUID;
 public record ClientePFResponseDTO(
         UUID id,
         String nome,
-        String dataNascimento,
-        ClienteResponseDTO cliente
+        String dataNascimento
+
 ) {
 }

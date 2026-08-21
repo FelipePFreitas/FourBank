@@ -3,22 +3,19 @@ package com.felipefreitas.FourBank.entity;
 import com.felipefreitas.FourBank.enums.ClienteTipo;
 import com.felipefreitas.FourBank.enums.StatusCliente;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "clientes") // Apenas a classe pai declara a tabela
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_cliente", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "clientes")
+@Inheritance(strategy = InheritanceType.JOINED)// Apenas a classe pai declara a tabela
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public abstract class ClienteEntity {
 
     @Id

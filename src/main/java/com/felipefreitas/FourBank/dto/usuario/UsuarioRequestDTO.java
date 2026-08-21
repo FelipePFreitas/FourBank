@@ -17,4 +17,5 @@ public record UsuarioRequestDTO(
         @NotNull(message = "ID do cliente é obrigatório")
         UUID idCliente
 ) {
+
 }
