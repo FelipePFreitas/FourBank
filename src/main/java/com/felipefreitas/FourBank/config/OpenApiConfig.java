@@ -4,20 +4,30 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@SecurityScheme(
+        name = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT",
+        in = SecuritySchemeIn.HEADER
+)
 @OpenAPIDefinition(
         info = @Info(
-                title = "Bancofel: a API que acelera o seu ecossistema financeiro.",
+                title = "FourBank API",
                 version = "1.0.0",
-                description = "API RESTful para gerenciamento de um ecossistema de Banco, " +
-                              "permitindo o controle dos clientes,contas e transações",
+                description = "API REST para gestão bancária, com recursos de clientes, contas e transações.",
+                termsOfService = "https://github.com/FelipePFreitas/FourBank",
                 contact = @Contact(
                         name = "Felipe Freitas",
-                        email = "felipefreitas210891@gmail.com.br",
-                        url = "https://www.linkedin.com/in/felipe-freitas-aa8651316/"
+                        email = "felipefreitas210891@gmail.com",
+                        url = "https://github.com/FelipePFreitas"
                 ),
                 license = @License(
                         name = "Apache 2.0",
@@ -25,7 +35,7 @@ import org.springframework.context.annotation.Configuration;
                 )
         ),
         servers = {
-                @Server(url = "http://localhost:8080", description = "Servidor de Desenvolvimento"),
+                @Server(url = "http://localhost:8080", description = "Ambiente local"),
         }
 )
 public class OpenApiConfig {
