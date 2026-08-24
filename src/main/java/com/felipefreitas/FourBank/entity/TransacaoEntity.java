@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TrasacaoEntity {
+public class TransacaoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
