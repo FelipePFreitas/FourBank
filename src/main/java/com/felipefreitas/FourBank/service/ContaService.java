@@ -50,7 +50,7 @@ public class ContaService {
                 .cliente(cliente)
                 .build();
 
-        ContaEntity contaSalva = contaRepository.save(novaConta);
+        contaRepository.save(novaConta);
     }
 
     public String gerarNumeroConta() {
