@@ -4,9 +4,10 @@ import com.felipefreitas.FourBank.enums.TipoTransacao;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record TrasacaoRequestDTO(
+public record TransacaoRequestDTO(
         @NotNull(message = "Tipo da transação é obrigatório")
         TipoTransacao tipoTransacao,
 
@@ -14,6 +15,8 @@ public record TrasacaoRequestDTO(
         String valor,
 
         String descricao,
+
+        LocalDateTime criadoEm,
 
         @NotNull(message = "Conta de origem é obrigatória")
         UUID contaOrigemId,
