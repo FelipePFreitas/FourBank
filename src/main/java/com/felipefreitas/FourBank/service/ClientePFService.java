@@ -7,6 +7,7 @@ import com.felipefreitas.FourBank.dto.usuario.UsuarioResponseDTO;
 import com.felipefreitas.FourBank.entity.ClientePFEntity;
 import com.felipefreitas.FourBank.entity.EnderecosEntity;
 import com.felipefreitas.FourBank.entity.UsuarioEntity;
+import com.felipefreitas.FourBank.enums.ClienteTipo;
 import com.felipefreitas.FourBank.enums.ErrorEnum;
 import com.felipefreitas.FourBank.enums.StatusCliente;
 import com.felipefreitas.FourBank.exceptions.BaseExceptions;
@@ -71,6 +72,7 @@ public class ClientePFService {
         clientePFEntity.setCriadoEm(agora);
         clientePFEntity.setAtualizadoEm(agora);
         clientePFEntity.setStatusCliente(StatusCliente.ATIVO);
+        clientePFEntity.setClienteTipo(ClienteTipo.PESSOA_FISICA);
         clientePFEntity.setEndereco(endereco);
 
         ClientePFEntity clienteSalvo = clientePFRepository.save(clientePFEntity);
@@ -93,6 +95,7 @@ public class ClientePFService {
                 clienteSalvo.getEmail(),
                 clienteSalvo.getTelefone(),
                 clienteSalvo.getStatusCliente(),
+                clienteSalvo.getClienteTipo(),
                 new EnderecoResponseDTO(
                         clienteSalvo.getEndereco().getId(),
                         clienteSalvo.getEndereco().getEndereco(),

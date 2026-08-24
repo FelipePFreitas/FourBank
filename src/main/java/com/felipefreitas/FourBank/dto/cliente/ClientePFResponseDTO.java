@@ -2,6 +2,7 @@ package com.felipefreitas.FourBank.dto.cliente;
 
 import com.felipefreitas.FourBank.dto.endereco.EnderecoResponseDTO;
 import com.felipefreitas.FourBank.dto.usuario.UsuarioResponseDTO;
+import com.felipefreitas.FourBank.enums.ClienteTipo;
 import com.felipefreitas.FourBank.enums.StatusCliente;
 
 import java.util.UUID;
@@ -14,6 +15,7 @@ public record ClientePFResponseDTO(
         String email,
         String telefone,
         StatusCliente statusCliente,
+        ClienteTipo clienteTipo,
         EnderecoResponseDTO endereco,
         UsuarioResponseDTO usuario
 

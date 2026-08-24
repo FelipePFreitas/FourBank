@@ -89,6 +89,7 @@ public class ClientePJService {
                 clienteSalvo.getEmail(),
                 clienteSalvo.getTelefone(),
                 clienteSalvo.getStatusCliente(),
+                clienteSalvo.getClienteTipo(),
                 new EnderecoResponseDTO(
                         clienteSalvo.getEndereco().getId(),
                         clienteSalvo.getEndereco().getEndereco(),
