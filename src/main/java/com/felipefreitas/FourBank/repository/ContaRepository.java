@@ -14,4 +14,7 @@ public interface ContaRepository extends JpaRepository<ContaEntity, UUID> {
 
     Optional<ContaEntity> findByNumeroConta(String numeroConta);
 
+    Optional<ContaEntity> findByChavesPixContaining(String chavePix);
+
+    Optional<ContaEntity> findByClienteUsuarioLogin(String loginUsuarioAutenticado);
 }
