@@ -3,6 +3,7 @@ package com.felipefreitas.FourBank.service;
 
 import com.felipefreitas.FourBank.entity.ClienteEntity;
 import com.felipefreitas.FourBank.entity.ContaEntity;
+import com.felipefreitas.FourBank.enums.ClienteTipo;
 import com.felipefreitas.FourBank.enums.ErrorEnum;
 import com.felipefreitas.FourBank.exceptions.BaseExceptions;
 import com.felipefreitas.FourBank.repository.ContaRepository;
@@ -68,4 +69,31 @@ public class ContaService {
         return conta.getSaldo();
     }
 
+    @Transactional
+    public void cadastrarChavePix(String loginUsuarioAutenticado, String chavePix) {
+
+        if (chavePix == null || chavePix.isBlank()) {
+            throw new BaseExceptions(ErrorEnum.NULO_BRANCO);
+        }
+
+        // 1) Busca conta do usuário autenticado (não pela chave)
+        ContaEntity conta = contaRepository.findByClienteUsuarioLogin(loginUsuarioAutenticado)
+                .orElseThrow(() -> new BaseExceptions(ErrorEnum.NUMERO_CONTA_NAO_EXISTE));
+
+        // 2) Garante unicidade global da chave
+        if (contaRepository.findByChavesPixContaining(chavePix).isPresent()) {
+            throw new BaseExceptions(ErrorEnum.CHAVEPIX_JACADASTRADA);
+        }
+
+        // 3) Limite por tipo de cliente
+        int maxChavesPix = conta.getCliente().getClienteTipo().equals(ClienteTipo.PESSOA_JURIDICA) ? 20 : 5;
+
+        // usa >= para bloquear quando já está no limite
+        if (conta.getChavesPix().size() >= maxChavesPix) {
+            throw new BaseExceptions(ErrorEnum.LIMITE_CHAVEPIX);
+        }
+
+        conta.getChavesPix().add(chavePix);
+        contaRepository.save(conta);
+    }
 }
