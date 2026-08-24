@@ -1,10 +1,7 @@
 package com.felipefreitas.FourBank.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class ContaEntity {
 
     @Id
@@ -24,18 +22,14 @@ public class ContaEntity {
     @Column(nullable = false)
     private String agencia;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String numeroConta;
 
     @Column(nullable = false)
     private BigDecimal saldo;
 
     @OneToOne
-    @JoinColumn(name = "cliente_pf_id", referencedColumnName = "id", unique = true)
-    private ClientePFEntity clientePF;
-
-    @OneToOne
-    @JoinColumn(name = "cliente_pj_id", referencedColumnName = "id", unique = true)
-    private ClientePJEntity clientePJ;
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id", unique = true,nullable = false)
+    private ClienteEntity cliente;
 
 }

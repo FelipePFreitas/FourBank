@@ -25,11 +25,7 @@ public class UsuarioEntity {
     private String senha;
 
     @OneToOne
-    @JoinColumn(name = "cliente_pf_id", referencedColumnName = "id", unique = true)
-    private ClientePFEntity clientePF;
-
-    @OneToOne
-    @JoinColumn(name = "cliente_pj_id", referencedColumnName = "id", unique = true)
-    private ClientePJEntity clientePJ;
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id", unique = true)
+    private ClienteEntity cliente;
 
 }

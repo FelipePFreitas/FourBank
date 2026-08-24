@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record ClientePJRequestDTO(
-        @NotBlank(message = "Razão social é obrigatória")
-        String razaoSocial,
+        @NotBlank(message = "Nome/Razão social é obrigatório")
+        String nomeRazaoSocial,
 
         String nomeFantasia,
 
@@ -23,7 +23,7 @@ public record ClientePJRequestDTO(
         BigDecimal faturamentoAnual,
 
         @NotBlank(message = "CNPJ é obrigatório")
-        String cnpj,
+        String documento,
 
         @NotBlank(message = "E-mail é obrigatório")
         String email,
@@ -39,4 +39,11 @@ public record ClientePJRequestDTO(
         @NotNull(message = "Credenciais de usuário são obrigatórias")
         UsuarioRequestDTO usuario
 ) {
+    public String razaoSocial() {
+        return nomeRazaoSocial;
+    }
+
+    public String cnpj() {
+        return documento;
+    }
 }

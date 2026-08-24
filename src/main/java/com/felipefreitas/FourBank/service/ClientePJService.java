@@ -34,7 +34,7 @@ public class ClientePJService {
             throw new BaseExceptions(ErrorEnum.CNPJ_INVALIDO);
         }
 
-        if (clientePJRepository.existsByCnpj(request.cnpj())) {
+        if (clientePJRepository.existsByDocumento(request.cnpj())) {
             throw new BaseExceptions(ErrorEnum.CLIENTE_JA_CADASTRADO);
         }
 
@@ -57,11 +57,11 @@ public class ClientePJService {
         endereco.setUf(request.endereco().uf());
 
         ClientePJEntity clientePJEntity = new ClientePJEntity();
-        clientePJEntity.setRazaoSocial(request.razaoSocial());
+        clientePJEntity.setNomeRazaoSocial(request.razaoSocial());
         clientePJEntity.setNomeFantasia(request.nomeFantasia());
         clientePJEntity.setDataFundacao(request.dataFundacao());
         clientePJEntity.setFaturamentoAnual(request.faturamentoAnual());
-        clientePJEntity.setCnpj(request.cnpj());
+        clientePJEntity.setDocumento(request.cnpj());
         clientePJEntity.setEmail(request.email());
         clientePJEntity.setTelefone(request.telefone());
         clientePJEntity.setCriadoEm(agora);
@@ -74,18 +74,18 @@ public class ClientePJService {
         UsuarioEntity usuario = UsuarioEntity.builder()
                 .login(request.usuario().login())
                 .senha(passwordEncoder.encode(request.usuario().senha()))
-                .clientePJ(clienteSalvo)
+                .cliente(clienteSalvo)
                 .build();
 
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuario);
 
         return new ClientePJResponseDTO(
                 clienteSalvo.getId(),
-                clienteSalvo.getRazaoSocial(),
+                clienteSalvo.getNomeRazaoSocial(),
                 clienteSalvo.getNomeFantasia(),
                 clienteSalvo.getDataFundacao(),
                 clienteSalvo.getFaturamentoAnual(),
-                clienteSalvo.getCnpj(),
+                clienteSalvo.getDocumento(),
                 clienteSalvo.getEmail(),
                 clienteSalvo.getTelefone(),
                 clienteSalvo.getStatusCliente(),
@@ -100,9 +100,7 @@ public class ClientePJService {
                 ),
                 new UsuarioResponseDTO(
                         usuarioSalvo.getId(),
-                        usuarioSalvo.getLogin(),
-                        null,
-                        clienteSalvo.getId()
+                        usuarioSalvo.getLogin()
                 )
         );
     }

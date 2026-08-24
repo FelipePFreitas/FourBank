@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public record ClientePFResponseDTO(
         UUID id,
-        String nome,
+        String nomeRazaoSocial,
         String dataNascimento,
-        String cpf,
+        String documento,
         String email,
         String telefone,
         StatusCliente statusCliente,

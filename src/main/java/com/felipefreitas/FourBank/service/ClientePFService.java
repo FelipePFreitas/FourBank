@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -29,6 +30,7 @@ public class ClientePFService {
     private final ClientePFRepository clientePFRepository;
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ContaService contaService;
 
 
     @Transactional
@@ -37,7 +39,7 @@ public class ClientePFService {
             throw new BaseExceptions(ErrorEnum.CPF_INVALIDO);
         }
 
-        if (clientePFRepository.existsByCpf(request.cpf())) {
+        if (clientePFRepository.existsByDocumento(request.cpf())) {
             throw new BaseExceptions(ErrorEnum.CPF_JA_CADASTRADO);
         }
 
@@ -50,7 +52,9 @@ public class ClientePFService {
         }
 
         LocalDateTime agora = LocalDateTime.now();
+
         EnderecosEntity endereco = new EnderecosEntity();
+
         endereco.setEndereco(request.endereco().endereco());
         endereco.setNumero(request.endereco().numero());
         endereco.setCep(request.endereco().cep());
@@ -59,9 +63,9 @@ public class ClientePFService {
         endereco.setUf(request.endereco().uf());
 
         ClientePFEntity clientePFEntity = new ClientePFEntity();
-        clientePFEntity.setNome(request.nome());
+        clientePFEntity.setNomeRazaoSocial(request.nome());
         clientePFEntity.setDataNascimento(request.dataNascimento());
-        clientePFEntity.setCpf(request.cpf());
+        clientePFEntity.setDocumento(request.cpf());
         clientePFEntity.setEmail(request.email());
         clientePFEntity.setTelefone(request.telefone());
         clientePFEntity.setCriadoEm(agora);
@@ -74,16 +78,18 @@ public class ClientePFService {
         UsuarioEntity usuario = UsuarioEntity.builder()
                 .login(request.usuario().login())
                 .senha(passwordEncoder.encode(request.usuario().senha()))
-                .clientePF(clienteSalvo)
+                .cliente(clienteSalvo)
                 .build();
 
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuario);
 
+        contaService.criarConta(clienteSalvo, BigDecimal.ZERO);
+
         return new ClientePFResponseDTO(
                 clienteSalvo.getId(),
-                clienteSalvo.getNome(),
+                clienteSalvo.getNomeRazaoSocial(),
                 clienteSalvo.getDataNascimento(),
-                clienteSalvo.getCpf(),
+                clienteSalvo.getDocumento(),
                 clienteSalvo.getEmail(),
                 clienteSalvo.getTelefone(),
                 clienteSalvo.getStatusCliente(),
@@ -98,10 +104,9 @@ public class ClientePFService {
                 ),
                 new UsuarioResponseDTO(
                         usuarioSalvo.getId(),
-                        usuarioSalvo.getLogin(),
-                        clienteSalvo.getId(),
-                        null
+                        usuarioSalvo.getLogin()
                 )
         );
+
     }
 }

@@ -1,54 +1,27 @@
 package com.felipefreitas.FourBank.entity;
 
-import com.felipefreitas.FourBank.enums.StatusCliente;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
-@Table(name = "clientes_pj")
-@AllArgsConstructor
-@NoArgsConstructor
+@Table(name = "cliente_pj")
+@PrimaryKeyJoinColumn(name = "cliente_id_pj") // Une a chave primária com a tabela mãe
 @Getter
 @Setter
-public class ClientePJEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
-    @Column(nullable = false, unique = true)
-    private String cnpj;
-
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false)
-    private String telefone;
-
-    @Column(name = "criado_em", nullable = false)
-    private LocalDateTime criadoEm;
-
-    @Column(name = "atualizado_em", nullable = false)
-    private LocalDateTime atualizadoEm;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status_cliente", nullable = false)
-    private StatusCliente statusCliente;
-
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
-    private EnderecosEntity endereco;
-
-    @Column(nullable = false)
-    private String razaoSocial;
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+public class ClientePJEntity extends ClienteEntity {
 
     private String nomeFantasia;
 
