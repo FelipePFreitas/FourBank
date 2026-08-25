@@ -82,6 +82,7 @@ public class ClientePFService {
                 .senha(passwordEncoder.encode(request.usuario().senha()))
                 .cliente(clienteSalvo)
                 .build();
+        clienteSalvo.setUsuario(usuario);
 
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuario);
 

@@ -16,6 +16,7 @@ public record TransacaoRequestDTO(
 
         String descricao,
 
+        @NotNull(message = "Data de criação é obrigatória")
         LocalDateTime criadoEm,
 
         @NotNull(message = "Conta de origem é obrigatória")

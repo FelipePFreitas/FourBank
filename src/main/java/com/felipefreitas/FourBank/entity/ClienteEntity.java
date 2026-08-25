@@ -5,7 +5,9 @@ import com.felipefreitas.FourBank.enums.StatusCliente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -53,5 +55,10 @@ public abstract class ClienteEntity {
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id", nullable = false)
     private EnderecosEntity endereco;
+
+    @OneToOne(mappedBy = "cliente")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private UsuarioEntity usuario;
 
 }

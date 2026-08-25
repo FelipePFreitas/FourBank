@@ -16,5 +16,5 @@ public interface ContaRepository extends JpaRepository<ContaEntity, UUID> {
 
     Optional<ContaEntity> findByChavesPixContaining(String chavePix);
 
-    Optional<ContaEntity> findByClienteUsuarioLogin(String loginUsuarioAutenticado);
+    Optional<ContaEntity> findByCliente_Usuario_Login(String loginUsuarioAutenticado);
 }

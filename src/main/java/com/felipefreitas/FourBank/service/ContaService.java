@@ -77,7 +77,7 @@ public class ContaService {
         }
 
         // 1) Busca conta do usuário autenticado (não pela chave)
-        ContaEntity conta = contaRepository.findByClienteUsuarioLogin(loginUsuarioAutenticado)
+        ContaEntity conta = contaRepository.findByCliente_Usuario_Login(loginUsuarioAutenticado)
                 .orElseThrow(() -> new BaseExceptions(ErrorEnum.NUMERO_CONTA_NAO_EXISTE));
 
         // 2) Garante unicidade global da chave
