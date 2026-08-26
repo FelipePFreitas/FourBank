@@ -5,36 +5,33 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://www.docker.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
 
-API REST para onboarding de clientes bancarios (PF/PJ) com autenticacao JWT, desenvolvida com Java e Spring Boot.
+API REST para onboarding bancario (PF/PJ), autenticacao JWT, conta e transacoes Pix.
 
-## Estado atual do projeto
+## Funcionalidades implementadas
 
-Funcionalidades implementadas no codigo:
+- Cadastro de cliente PF: `POST /clientes/pf`
+- Cadastro de cliente PJ: `POST /clientes/pj`
+- Login com emissao de JWT: `POST /auth/login`
+- Cadastro de chave Pix da conta autenticada: `POST /contas/pix`
+- Consulta de dados da conta autenticada: `GET /contas`
+- Transferencia Pix: `POST /transacoes/pix/{chavePix}/{valor}`
+- Tratamento centralizado de erros com `ProblemDetail`
+- Persistencia com Spring Data JPA (PostgreSQL)
 
-- Cadastro de cliente PF (`POST /clientes/pf`) com validacao de CPF e criacao de usuario.
-- Cadastro de cliente PJ (`POST /clientes/pj`) com validacao de CNPJ e criacao de usuario.
-- Login (`POST /auth/login`) com emissao de token Bearer JWT.
-- Tratamento centralizado de erros de regra de negocio com `ProblemDetail`.
-- Persistencia com Spring Data JPA (PostgreSQL).
-
-Ja existem entidades e repositorios para `Conta` e `Transacao`, mas os endpoints desses dominios ainda nao estao expostos.
-
-## Arquitetura real (atual)
-
-O projeto esta organizado em arquitetura em camadas:
+## Arquitetura
 
 ```text
 com.felipefreitas.FourBank
-├── controller/   # Endpoints REST (AuthController, ClienteController)
-├── service/      # Regras de negocio e orquestracao de cadastro/login
-├── repository/   # Interfaces Spring Data JPA
-├── entity/       # Modelos persistidos no PostgreSQL
-├── dto/          # Contratos de entrada e saida da API
-├── security/     # JWT, filtro de autenticacao e UserDetailsService
-├── config/       # Configuracoes de Security e OpenAPI
-├── exceptions/   # Excecoes de dominio e handler global
+├── controller/   # Endpoints REST
+├── service/      # Regras de negocio
+├── repository/   # Spring Data JPA
+├── entity/       # Entidades persistidas
+├── dto/          # Contratos de entrada e saida
+├── security/     # JWT, filtros e UserDetailsService
+├── config/       # Security e OpenAPI
+├── exceptions/   # Excecoes e handler global
 ├── enums/        # Tipos e codigos de erro
-└── utils/        # Validadores utilitarios (CPF/CNPJ/CEP)
+└── utils/        # Utilitarios (CPF/CNPJ/CEP)
 ```
 
 ## Stack tecnica
@@ -46,28 +43,26 @@ com.felipefreitas.FourBank
 - PostgreSQL, Redis e RabbitMQ
 - Docker Compose e Testcontainers
 
-## Infraestrutura local (compose.yaml)
-
-Servicos definidos para desenvolvimento:
+## Infra local (compose.yaml)
 
 - PostgreSQL (`localhost:5432`)
-- RabbitMQ (`localhost:5672` e painel em `localhost:15672`)
+- RabbitMQ (`localhost:5672` e UI em `localhost:15672`)
 - Redis (`localhost:6379`)
 
 ## Como executar
 
 Pre-requisitos: Java 21, Docker e Docker Compose.
 
-1. Suba a infraestrutura:
+1. Subir infraestrutura:
    ```bash
    docker compose up -d
    ```
-2. Execute a aplicacao:
+2. Executar API:
    ```bash
    .\mvnw spring-boot:run
    ```
 
-## Documentacao e endpoints
+## Documentacao e autenticacao
 
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
 - OpenAPI JSON: `http://localhost:8080/v3/api-docs`
@@ -78,8 +73,9 @@ Endpoints publicos:
 - `POST /auth/login`
 - `POST /clientes/pf`
 - `POST /clientes/pj`
+- Rotas de documentacao (`/swagger-ui/**`, `/v3/api-docs/**`)
 
-Demais rotas exigem autenticacao com token JWT no header `Authorization: Bearer <token>`.
+Demais rotas exigem JWT no header `Authorization` no formato Bearer token.
 
 ## Testes
 
