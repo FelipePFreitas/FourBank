@@ -93,7 +93,9 @@ public class ContaService {
             throw new BaseExceptions(ErrorEnum.LIMITE_CHAVEPIX);
         }
 
-        conta.getChavesPix().add(chavePix);
+        String chaveFormatada = chavePix.trim().toLowerCase();
+
+        conta.getChavesPix().add(chaveFormatada);
         contaRepository.save(conta);
     }
 }

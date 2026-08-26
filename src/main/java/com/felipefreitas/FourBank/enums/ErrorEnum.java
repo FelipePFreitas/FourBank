@@ -31,7 +31,9 @@ public enum ErrorEnum {
     SAQUE_NULO_ZERO(400, 200, "Valor do saque deve ser maior que zero"),
     SAQUE_VALOR_MAIOR_SALDO(422, 201, "Valor do saque maior que o saldo disponível"),
     DEPOSITO_NULO_ZERO(400, 202, "Valor do depósito deve ser maior que zero"),
-    TIPO_TRANSACAO_INEXISTENTE(400, 203, "Tipo de transação inválido");
+    TIPO_TRANSACAO_INEXISTENTE(400, 203, "Tipo de transação inválido"),
+    TRANSACAO_PIX_FALHA(500, 204, "Falha na transação PIX"),
+    TRANSACAO_MESMA_CONTA(400, 205, "Não é possível realizar uma transação na mesma conta");
 
     private final int httpStatus;
     private final int errorCode;

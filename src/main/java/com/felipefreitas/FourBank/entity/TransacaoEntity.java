@@ -1,12 +1,11 @@
 package com.felipefreitas.FourBank.entity;
 
+import com.felipefreitas.FourBank.enums.StatusTransacao;
 import com.felipefreitas.FourBank.enums.TipoTransacao;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -16,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class TransacaoEntity {
 
     @Id
@@ -27,7 +27,7 @@ public class TransacaoEntity {
     private TipoTransacao tipoTransacao;
 
     @Column(nullable = false)
-    private String valor;
+    private BigDecimal valor;
 
     private String descricao;
 
@@ -41,6 +41,10 @@ public class TransacaoEntity {
     @ManyToOne
     @JoinColumn(name = "conta_destino_id", referencedColumnName = "id")
     private ContaEntity contaDestino;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusTransacao statusTransacao;
 
 
 }
