@@ -25,7 +25,10 @@ public class ContaService {
 
 
     public void criarConta(ClienteEntity cliente, BigDecimal saldoInicial) {
+        log.info("Iniciando criação de conta para clienteId={}", cliente.getId());
+
         if (saldoInicial == null || saldoInicial.compareTo(BigDecimal.ZERO) < 0) {
+            log.warn("Falha na criação de conta: saldo inicial inválido para clienteId={}", cliente.getId());
             throw new BaseExceptions(ErrorEnum.SALDO_NEGATIVO_NULO);
         }
 
@@ -52,7 +55,9 @@ public class ContaService {
                 .cliente(cliente)
                 .build();
 
-        contaRepository.save(novaConta);
+        ContaEntity contaSalva = contaRepository.save(novaConta);
+        log.info("Conta criada com sucesso. contaId={} clienteId={}",
+                contaSalva.getId(), cliente.getId());
     }
 
     public String gerarNumeroConta() {
@@ -65,15 +70,19 @@ public class ContaService {
 
     @Transactional(readOnly = true)
     public BigDecimal consultarSaldo(String numeroConta) {
+        log.info("Consultando saldo para número de conta informado.");
         ContaEntity conta = contaRepository.findByNumeroConta(numeroConta)
                 .orElseThrow(() -> new BaseExceptions(ErrorEnum.NUMERO_CONTA_NAO_EXISTE));
+        log.info("Consulta de saldo concluída com sucesso. contaId={}", conta.getId());
         return conta.getSaldo();
     }
 
     @Transactional
     public void cadastrarChavePix(String loginUsuarioAutenticado, String chavePix) {
+        log.info("Iniciando cadastro de chave Pix para login={}", loginUsuarioAutenticado);
 
         if (chavePix == null || chavePix.isBlank()) {
+            log.warn("Falha no cadastro de chave Pix: chave nula ou em branco para login={}", loginUsuarioAutenticado);
             throw new BaseExceptions(ErrorEnum.NULO_BRANCO);
         }
 
@@ -83,6 +92,7 @@ public class ContaService {
 
 
         if (contaRepository.findByChavesPixContaining(chavePix).isPresent()) {
+            log.warn("Falha no cadastro de chave Pix: chave já cadastrada para login={}", loginUsuarioAutenticado);
             throw new BaseExceptions(ErrorEnum.CHAVEPIX_JACADASTRADA);
         }
 
@@ -91,6 +101,7 @@ public class ContaService {
 
 
         if (conta.getChavesPix().size() >= maxChavesPix) {
+            log.warn("Falha no cadastro de chave Pix: limite atingido para contaId={}", conta.getId());
             throw new BaseExceptions(ErrorEnum.LIMITE_CHAVEPIX);
         }
 
@@ -98,14 +109,17 @@ public class ContaService {
 
         conta.getChavesPix().add(chaveFormatada);
         contaRepository.save(conta);
+        log.info("Chave Pix cadastrada com sucesso para contaId={}", conta.getId());
     }
 
 
     @Transactional(readOnly = true)
     public ContaResponseDTO consultarDadosConta(String loginUsuarioAutenticado) {
+        log.info("Consultando dados da conta para login={}", loginUsuarioAutenticado);
 
         ContaEntity conta = contaRepository.findByCliente_Usuario_Login(loginUsuarioAutenticado)
                 .orElseThrow(() -> new BaseExceptions(ErrorEnum.NUMERO_CONTA_NAO_EXISTE));
+        log.info("Consulta de dados da conta concluída com sucesso. contaId={}", conta.getId());
 
         return new ContaResponseDTO(
                 conta.getId(),

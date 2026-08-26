@@ -14,12 +14,14 @@ import com.felipefreitas.FourBank.repository.ClientePJRepository;
 import com.felipefreitas.FourBank.repository.UsuarioRepository;
 import com.felipefreitas.FourBank.utils.CNPJUtil;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class ClientePJService {
@@ -30,19 +32,25 @@ public class ClientePJService {
 
     @Transactional
     public ClientePJResponseDTO cadastroClientePJ(ClientePJRequestDTO request) {
+        log.info("Iniciando cadastro de cliente PJ para login={}", request.usuario().login());
+
         if (!CNPJUtil.isValid(request.cnpj())) {
+            log.warn("Falha no cadastro PJ: CNPJ inválido para login={}", request.usuario().login());
             throw new BaseExceptions(ErrorEnum.CNPJ_INVALIDO);
         }
 
         if (clientePJRepository.existsByDocumento(request.cnpj())) {
+            log.warn("Falha no cadastro PJ: CNPJ já cadastrado para login={}", request.usuario().login());
             throw new BaseExceptions(ErrorEnum.CLIENTE_JA_CADASTRADO);
         }
 
         if (clientePJRepository.existsByEmail(request.email())) {
+            log.warn("Falha no cadastro PJ: e-mail já cadastrado para login={}", request.usuario().login());
             throw new BaseExceptions(ErrorEnum.CLIENTE_JA_CADASTRADO);
         }
 
         if (usuarioRepository.findByLogin(request.usuario().login()).isPresent()) {
+            log.warn("Falha no cadastro PJ: login já cadastrado login={}", request.usuario().login());
             throw new BaseExceptions(ErrorEnum.LOGIN_JA_CADASTRADO);
         }
 
@@ -79,6 +87,8 @@ public class ClientePJService {
         clienteSalvo.setUsuario(usuario);
 
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuario);
+        log.info("Cadastro PJ concluído com sucesso. clienteId={} usuarioId={}",
+                clienteSalvo.getId(), usuarioSalvo.getId());
 
         return new ClientePJResponseDTO(
                 clienteSalvo.getId(),

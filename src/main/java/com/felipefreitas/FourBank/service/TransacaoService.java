@@ -28,8 +28,10 @@ public class TransacaoService {
 
     @Transactional
     public TransacaoResponseDTO pix(String loginUsuarioAutenticado, String chavePix, BigDecimal valor) {
+        log.info("Iniciando transferência Pix para login={}", loginUsuarioAutenticado);
 
         if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+            log.warn("Falha na transferência Pix: valor inválido para login={}", loginUsuarioAutenticado);
             throw new BaseExceptions(ErrorEnum.SALDO_NEGATIVO_NULO);
         }
 
@@ -41,10 +43,12 @@ public class TransacaoService {
 
 
         if (contaOrigem.getSaldo().compareTo(valor) < 0) {
+            log.warn("Falha na transferência Pix: saldo insuficiente para contaOrigemId={}", contaOrigem.getId());
             throw new BaseExceptions(ErrorEnum.SALDO_INSUFICIENTE);
         }
 
         if (contaDestino.getId().equals(contaOrigem.getId())) {
+            log.warn("Falha na transferência Pix: conta de origem e destino são iguais. contaId={}", contaOrigem.getId());
             throw new BaseExceptions(ErrorEnum.TRANSACAO_MESMA_CONTA);
         }
 
@@ -73,9 +77,11 @@ public class TransacaoService {
 
             transacao.setStatusTransacao(StatusTransacao.CONCLUIDA);
             transacaoRepository.save(transacao);
+            log.info("Transferência Pix concluída com sucesso. transacaoId={} contaOrigemId={} contaDestinoId={}",
+                    transacao.getId(), contaOrigem.getId(), contaDestino.getId());
 
         } catch (Exception e) {
-            log.error("Erro ao processar transferência PIX. Estornando valor...", e);
+            log.error("Erro ao processar transferência PIX para login={}. Estornando valor...", loginUsuarioAutenticado, e);
 
 
             contaOrigem.setSaldo(contaOrigem.getSaldo().add(valor));

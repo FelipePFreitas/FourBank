@@ -36,19 +36,25 @@ public class ClientePFService {
 
     @Transactional
     public ClientePFResponseDTO cadastroClientePF(ClientePFRequestDTO request) {
+        log.info("Iniciando cadastro de cliente PF para login={}", request.usuario().login());
+
         if (!CPFUtil.isValid(request.cpf())) {
+            log.warn("Falha no cadastro PF: CPF inválido para login={}", request.usuario().login());
             throw new BaseExceptions(ErrorEnum.CPF_INVALIDO);
         }
 
         if (clientePFRepository.existsByDocumento(request.cpf())) {
+            log.warn("Falha no cadastro PF: CPF já cadastrado para login={}", request.usuario().login());
             throw new BaseExceptions(ErrorEnum.CPF_JA_CADASTRADO);
         }
 
         if (clientePFRepository.existsByEmail(request.email())) {
+            log.warn("Falha no cadastro PF: e-mail já cadastrado para login={}", request.usuario().login());
             throw new BaseExceptions(ErrorEnum.CLIENTE_JA_CADASTRADO);
         }
 
         if (usuarioRepository.findByLogin(request.usuario().login()).isPresent()) {
+            log.warn("Falha no cadastro PF: login já cadastrado login={}", request.usuario().login());
             throw new BaseExceptions(ErrorEnum.LOGIN_JA_CADASTRADO);
         }
 
@@ -87,6 +93,8 @@ public class ClientePFService {
         UsuarioEntity usuarioSalvo = usuarioRepository.save(usuario);
 
         contaService.criarConta(clienteSalvo, BigDecimal.ZERO);
+        log.info("Cadastro PF concluído com sucesso. clienteId={} usuarioId={}",
+                clienteSalvo.getId(), usuarioSalvo.getId());
 
         return new ClientePFResponseDTO(
                 clienteSalvo.getId(),
