@@ -25,8 +25,8 @@ public class TransacaoController {
 
     @PostMapping("/pix/{chavePix}/{valor}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<TransacaoResponseDTO> pix (@AuthenticationPrincipal UserDetails user, @PathVariable String chovePix, @PathVariable BigDecimal valor){
-        TransacaoResponseDTO transacaoResponseDTO = transacaoService.pix(user.getUsername(), chovePix, valor);
+    public ResponseEntity<TransacaoResponseDTO> pix (@AuthenticationPrincipal UserDetails user, @PathVariable String chavePix, @PathVariable BigDecimal valor){
+        TransacaoResponseDTO transacaoResponseDTO = transacaoService.pix(user.getUsername(), chavePix, valor);
         return ResponseEntity.ok(transacaoResponseDTO);
     }
 

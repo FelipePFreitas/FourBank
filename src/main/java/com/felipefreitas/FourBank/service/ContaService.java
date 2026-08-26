@@ -1,6 +1,7 @@
 package com.felipefreitas.FourBank.service;
 
 
+import com.felipefreitas.FourBank.dto.conta.ContaResponseDTO;
 import com.felipefreitas.FourBank.entity.ClienteEntity;
 import com.felipefreitas.FourBank.entity.ContaEntity;
 import com.felipefreitas.FourBank.enums.ClienteTipo;
@@ -76,19 +77,19 @@ public class ContaService {
             throw new BaseExceptions(ErrorEnum.NULO_BRANCO);
         }
 
-        // 1) Busca conta do usuário autenticado (não pela chave)
+
         ContaEntity conta = contaRepository.findByCliente_Usuario_Login(loginUsuarioAutenticado)
                 .orElseThrow(() -> new BaseExceptions(ErrorEnum.NUMERO_CONTA_NAO_EXISTE));
 
-        // 2) Garante unicidade global da chave
+
         if (contaRepository.findByChavesPixContaining(chavePix).isPresent()) {
             throw new BaseExceptions(ErrorEnum.CHAVEPIX_JACADASTRADA);
         }
 
-        // 3) Limite por tipo de cliente
+
         int maxChavesPix = conta.getCliente().getClienteTipo().equals(ClienteTipo.PESSOA_JURIDICA) ? 20 : 5;
 
-        // usa >= para bloquear quando já está no limite
+
         if (conta.getChavesPix().size() >= maxChavesPix) {
             throw new BaseExceptions(ErrorEnum.LIMITE_CHAVEPIX);
         }
@@ -97,5 +98,22 @@ public class ContaService {
 
         conta.getChavesPix().add(chaveFormatada);
         contaRepository.save(conta);
+    }
+
+
+    @Transactional(readOnly = true)
+    public ContaResponseDTO consultarDadosConta(String loginUsuarioAutenticado) {
+
+        ContaEntity conta = contaRepository.findByCliente_Usuario_Login(loginUsuarioAutenticado)
+                .orElseThrow(() -> new BaseExceptions(ErrorEnum.NUMERO_CONTA_NAO_EXISTE));
+
+        return new ContaResponseDTO(
+                conta.getId(),
+                conta.getAgencia(),
+                conta.getNumeroConta(),
+                conta.getSaldo(),
+                conta.getCliente().getId()
+        );
+
     }
 }

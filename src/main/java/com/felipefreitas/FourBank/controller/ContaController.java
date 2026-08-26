@@ -1,5 +1,6 @@
 package com.felipefreitas.FourBank.controller;
 
+import com.felipefreitas.FourBank.dto.conta.ContaResponseDTO;
 import com.felipefreitas.FourBank.service.ContaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,5 +37,21 @@ public class ContaController {
                                              @RequestBody String body) {
         contaService.cadastrarChavePix(user.getUsername(), body);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    @PreAuthorize("isAuthenticated()")
+    @Operation(
+            summary = "Consultar dados da conta",
+            description = "Consulta os dados da conta do usuário autenticado."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Dados da conta retornados com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Não autenticado", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acesso negado", content = @Content)
+    })
+    public ResponseEntity<ContaResponseDTO> consultaDadosConta(@AuthenticationPrincipal UserDetails user) {
+        ContaResponseDTO contaResponseDTO = contaService.consultarDadosConta(user.getUsername());
+        return ResponseEntity.ok(contaResponseDTO);
     }
 }
