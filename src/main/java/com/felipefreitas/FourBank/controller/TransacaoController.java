@@ -48,4 +48,22 @@ public class TransacaoController {
         return ResponseEntity.ok(transacaoResponseDTO);
     }
 
+
+    @PostMapping("/deposito/{valor}")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Depositar valor", description = "Realiza um depósito na conta do usuário autenticado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Depósito realizado com sucesso",
+                    content = @Content(schema = @Schema(implementation = TransacaoResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos para a transação", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Não autenticado", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acesso negado", content = @Content)
+    })
+    public ResponseEntity<TransacaoResponseDTO> deposito(@AuthenticationPrincipal UserDetails user,
+                                                         @PathVariable BigDecimal valor) {
+
+        TransacaoResponseDTO transacaoResponseDTO = transacaoService.depositar(user.getUsername(), valor);
+        return ResponseEntity.ok(transacaoResponseDTO);
+    }
+
 }

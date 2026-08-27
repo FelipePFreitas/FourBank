@@ -9,6 +9,7 @@ import com.felipefreitas.FourBank.enums.TipoTransacao;
 import com.felipefreitas.FourBank.exceptions.BaseExceptions;
 import com.felipefreitas.FourBank.repository.ContaRepository;
 import com.felipefreitas.FourBank.repository.TransacaoRepository;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -101,6 +102,53 @@ public class TransacaoService {
                 transacao.getCriadoEm(),
                 transacao.getContaOrigem().getId(),
                 transacao.getContaDestino().getId());
+    }
+
+    @Transactional
+    public TransacaoResponseDTO depositar(String loginUsuarioAutenticado, BigDecimal valor) {
+        log.info("Iniciando depósito para login={} valor={}", loginUsuarioAutenticado, valor);
+
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+            log.warn("Falha na transferência depósito: valor inválido para login={}", loginUsuarioAutenticado);
+            throw new BaseExceptions(ErrorEnum.SALDO_NEGATIVO_NULO);
+        }
+
+        ContaEntity contaOrigem = contaRepository.findByCliente_Usuario_Login(loginUsuarioAutenticado)
+                .orElseThrow(() -> {
+                    log.warn("Falha no depósito: conta não encontrada para login={}", loginUsuarioAutenticado);
+                    return new BaseExceptions(ErrorEnum.NUMERO_CONTA_NAO_EXISTE);
+                });
+        log.info("Conta localizada para depósito. contaId={} saldoAnterior={}",
+                contaOrigem.getId(), contaOrigem.getSaldo());
+
+        contaOrigem.setSaldo(contaOrigem.getSaldo().add(valor));
+
+        contaRepository.save(contaOrigem);
+        log.info("Saldo atualizado com sucesso. contaId={} saldoAtual={}",
+                contaOrigem.getId(), contaOrigem.getSaldo());
+
+        TransacaoEntity transacao = TransacaoEntity.builder()
+                .tipoTransacao(TipoTransacao.DEPOSITO)
+                .valor(valor)
+                .descricao("Depósito de " + valor + " na conta " + contaOrigem.getNumeroConta())
+                .criadoEm(LocalDateTime.now())
+                .contaOrigem(contaOrigem)
+                .contaDestino(null)
+                .statusTransacao(StatusTransacao.CONCLUIDA)
+                .build();
+
+        transacaoRepository.save(transacao);
+        log.info("Depósito concluído com sucesso. transacaoId={} contaId={} valor={}",
+                transacao.getId(), contaOrigem.getId(), valor);
+
+        return new TransacaoResponseDTO(
+                transacao.getId(),
+                transacao.getTipoTransacao(),
+                transacao.getValor(),
+                transacao.getDescricao(),
+                transacao.getCriadoEm(),
+                transacao.getContaOrigem().getId(),
+                transacao.getContaDestino() != null ? transacao.getContaDestino().getId() : null);
     }
 
 }
