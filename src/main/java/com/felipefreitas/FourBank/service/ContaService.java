@@ -68,15 +68,6 @@ public class ContaService {
         return String.format("%07d", numero);
     }
 
-    @Transactional(readOnly = true)
-    public BigDecimal consultarSaldo(String numeroConta) {
-        log.info("Consultando saldo para número de conta informado.");
-        ContaEntity conta = contaRepository.findByNumeroConta(numeroConta)
-                .orElseThrow(() -> new BaseExceptions(ErrorEnum.NUMERO_CONTA_NAO_EXISTE));
-        log.info("Consulta de saldo concluída com sucesso. contaId={}", conta.getId());
-        return conta.getSaldo();
-    }
-
     @Transactional
     public void cadastrarChavePix(String loginUsuarioAutenticado, String chavePix) {
         log.info("Iniciando cadastro de chave Pix para login={}", loginUsuarioAutenticado);
