@@ -66,4 +66,22 @@ public class TransacaoController {
         return ResponseEntity.ok(transacaoResponseDTO);
     }
 
+
+    @PostMapping("/saque/{valor}")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Sacar valor", description = "Realiza um saque na conta do usuário autenticado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Saque realizado com sucesso",
+                    content = @Content(schema = @Schema(implementation = TransacaoResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos para a transação", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Não autenticado", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Acesso negado", content = @Content)
+    })
+    public ResponseEntity<TransacaoResponseDTO> saque(@AuthenticationPrincipal UserDetails user,
+                                                         @PathVariable BigDecimal valor) {
+
+        TransacaoResponseDTO transacaoResponseDTO = transacaoService.saque(user.getUsername(), valor);
+        return ResponseEntity.ok(transacaoResponseDTO);
+    }
+
 }
