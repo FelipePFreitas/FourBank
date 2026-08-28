@@ -1,0 +1,11 @@
+:host { display: block; min-height: 100vh; }
+.shell { display: flex; min-height: 100vh; }
+.sidebar { width: 244px; background: #CC092F; color: white; padding: 28px 18px; display: flex; flex-direction: column; }
+.brand { color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: 800; margin: 0 12px 48px; }
+.brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: white; color: #CC092F; }
+nav { display: grid; gap: 8px; }
+nav a, .logout { color: #ffe7ed; text-decoration: none; border: 0; background: transparent; text-align: left; padding: 13px 14px; border-radius: 8px; font: inherit; cursor: pointer; }
+nav a:hover, nav a.active, .logout:hover { background: rgba(255,255,255,.16); color: white; }
+.logout { margin-top: auto; }
+.content { flex: 1; min-width: 0; padding: 40px clamp(20px, 5vw, 72px); background: #EBEBEB; }
+@media (max-width: 700px) { .shell { display: block; } .sidebar { width: auto; padding: 16px; } .brand { margin: 0 0 16px; } nav { display: flex; overflow-x: auto; } .logout { position: absolute; right: 16px; top: 16px; } .content { padding: 24px 16px; } }

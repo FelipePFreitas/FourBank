@@ -1,0 +1,11 @@
+<header class="page-header"><div><p class="eyebrow">Olá, cliente</p><h1>Visão geral</h1><p class="muted">Acompanhe sua vida financeira.</p></div><a class="primary action" routerLink="/operacoes">Nova operação</a></header>
+@if (loading()) { <div class="card loading" aria-live="polite">Carregando sua conta...</div> }
+@if (error()) { <div class="error" role="alert">{{ error() }}</div> }
+@if (!loading() && banking.conta(); as conta) {
+  <section class="balance card"><div><span class="label">Saldo disponível</span><strong>{{ banking.mostrarValores() ? (conta.saldo | currency:'BRL') : '••••••' }}</strong></div><button class="privacy" type="button" (click)="banking.alternarVisibilidadeValores()" [attr.aria-label]="banking.mostrarValores() ? 'Ocultar saldo' : 'Exibir saldo'">{{ banking.mostrarValores() ? 'Ocultar' : 'Exibir' }}</button></section>
+  <section class="grid">
+    <article class="card"><span class="label">Agência</span><strong>{{ conta.agencia }}</strong></article>
+    <article class="card"><span class="label">Conta</span><strong>{{ conta.numeroConta }}</strong></article>
+  </section>
+}
+<section class="card quick"><h2>Ações rápidas</h2><div class="quick-grid"><a routerLink="/operacoes" [queryParams]="{ tipo: 'deposito' }">Depositar</a><a routerLink="/operacoes" [queryParams]="{ tipo: 'pix' }">Enviar Pix</a><a routerLink="/operacoes" [queryParams]="{ tipo: 'transferencia' }">Transferir</a><a routerLink="/historico">Ver histórico</a></div></section>

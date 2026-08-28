@@ -1,0 +1,31 @@
+<header class="page-header"><div><p class="eyebrow">Movimente sua conta</p><h1>Operações</h1><p class="muted">Escolha uma operação para continuar.</p></div></header>
+<div class="tabs" role="tablist">
+  <button [class.active]="tipo() === 'deposito'" (click)="selecionar('deposito')" role="tab">Depósito</button>
+  <button [class.active]="tipo() === 'saque'" (click)="selecionar('saque')" role="tab">Saque</button>
+  <button [class.active]="tipo() === 'pix'" (click)="selecionar('pix')" role="tab">Pix</button>
+  <button [class.active]="tipo() === 'transferencia'" (click)="selecionar('transferencia')" role="tab">Transferência</button>
+</div>
+@if (message()) { <div class="success" role="status">{{ message() }}</div> }
+@if (error()) { <div class="error" role="alert">{{ error() }}</div> }
+<section class="card form-card">
+  @if (tipo() === 'deposito' || tipo() === 'saque') {
+    <h2>{{ tipo() === 'deposito' ? 'Depositar' : 'Sacar' }}</h2>
+    <form [formGroup]="valorForm" (ngSubmit)="executarValor()"><label for="valor">Valor</label><input id="valor" type="number" step="0.01" formControlName="valor" placeholder="0,00" /><small>Informe um valor maior que zero.</small><button class="primary" [disabled]="loading()" type="submit">{{ loading() ? 'Processando...' : 'Continuar' }}</button></form>
+  } @else if (tipo() === 'pix') {
+    <h2>Enviar Pix</h2>
+    <form [formGroup]="pixForm" (ngSubmit)="executarPix()"><label for="chavePix">Chave Pix</label><input id="chavePix" formControlName="chavePix" /><label for="pixValor">Valor</label><input id="pixValor" type="number" step="0.01" formControlName="valor" /><button class="primary" [disabled]="loading()" type="submit">Revisar Pix</button></form>
+  } @else {
+    <h2>Transferência bancária</h2>
+    <form class="transfer-form" [formGroup]="transferenciaForm" (ngSubmit)="executarTransferencia()">
+      <label for="nome">Nome do favorecido</label><input id="nome" formControlName="nome" />
+      <label for="documento">CPF/CNPJ</label><input id="documento" formControlName="documento" />
+      <label for="banco">Banco</label><input id="banco" formControlName="banco" />
+      <label for="agencia">Agência</label><input id="agencia" formControlName="agencia" />
+      <label for="conta">Conta</label><input id="conta" formControlName="conta" />
+      <label for="tipoConta">Tipo de conta</label><select id="tipoConta" formControlName="tipoConta"><option value="CC">Conta corrente</option><option value="CP">Conta poupança</option></select>
+      <label for="transferValor">Valor</label><input id="transferValor" type="number" step="0.01" formControlName="valor" />
+      <label for="agendadaPara">Agendar para (opcional)</label><input id="agendadaPara" type="datetime-local" formControlName="agendadaPara" />
+      <button class="primary" [disabled]="loading()" type="submit">{{ loading() ? 'Processando...' : 'Revisar transferência' }}</button>
+    </form>
+  }
+</section>

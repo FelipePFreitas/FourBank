@@ -144,3 +144,24 @@ Os valores abaixo podem ser sobrescritos por variaveis de ambiente:
 | `TRANSFERENCIA_HORARIO_INICIAL` | `08:00` | Inicio do horario bancario |
 | `TRANSFERENCIA_HORARIO_FINAL` | `17:00` | Fim do horario bancario |
 | `TRANSFERENCIA_AGENDAMENTO_INTERVALO_MS` | `5000` | Intervalo do processador de agendamentos |
+
+## Frontend Angular
+
+O frontend está em `frontend/` e usa Angular standalone, Reactive Forms, rotas protegidas por JWT e chamadas tipadas para a API.
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+Acesse `http://localhost:4200`. O proxy de desenvolvimento encaminha `/api` para `http://localhost:8080`, evitando CORS local.
+
+Telas disponíveis:
+
+- Login e logout com token Bearer.
+- Dashboard com saldo, agência e conta.
+- Depósito, saque, Pix e transferência imediata/agendada.
+- Histórico local das operações retornadas pela API durante a sessão.
+
+O backend atual não possui um endpoint GET de histórico; por isso, o frontend não inventa dados e mantém somente as transações efetivamente retornadas pelas operações realizadas.

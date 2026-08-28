@@ -1,0 +1,7 @@
+<header class="page-header"><div><p class="eyebrow">Movimentações</p><h1>Histórico</h1><p class="muted">Operações realizadas nesta sessão.</p></div></header>
+<section class="card history">
+  @if (banking.historico().length === 0) { <div class="empty"><strong>Nenhuma operação registrada</strong><span>Suas operações concluídas aparecerão aqui.</span></div> }
+  @for (transacao of banking.historico(); track transacao.id) {
+    <article class="history-row"><div class="history-icon">{{ transacao.tipoTransacao.substring(0, 1) }}</div><div><strong>{{ transacao.tipoTransacao }}</strong><span>{{ transacao.descricao || 'Transação bancária' }}</span></div><div class="history-value">{{ banking.mostrarValores() ? (transacao.valor | currency:'BRL') : '••••••' }}<small>{{ transacao.criadoEm | date:'dd/MM/yyyy HH:mm' }}</small></div></article>
+  }
+</section>

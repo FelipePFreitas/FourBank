@@ -1,0 +1,19 @@
+<main class="login-page">
+  <section class="login-card" aria-labelledby="login-title">
+    <div class="logo">4</div>
+    <p class="eyebrow">Banco digital</p>
+    <h1 id="login-title">Bem-vindo ao FourBank</h1>
+    <p class="muted">Acesse sua conta de forma segura.</p>
+    <form [formGroup]="form" (ngSubmit)="entrar()">
+      <label for="login">Login</label>
+      <input id="login" formControlName="login" autocomplete="username" [attr.aria-invalid]="form.controls.login.invalid && form.controls.login.touched" />
+      @if (form.controls.login.invalid && form.controls.login.touched) { <small role="alert">Informe seu login.</small> }
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" formControlName="senha" autocomplete="current-password" [attr.aria-invalid]="form.controls.senha.invalid && form.controls.senha.touched" />
+      @if (form.controls.senha.invalid && form.controls.senha.touched) { <small role="alert">A senha deve ter ao menos 6 caracteres.</small> }
+      @if (error()) { <div class="error" role="alert">{{ error() }}</div> }
+      <button class="primary" type="submit" [disabled]="loading()">{{ loading() ? 'Entrando...' : 'Entrar' }}</button>
+    </form>
+    <div class="signup"><span>Ainda não tem conta?</span><a routerLink="/cadastro" [queryParams]="{ tipo: 'pf' }">Cadastre-se como PF</a><a routerLink="/cadastro" [queryParams]="{ tipo: 'pj' }">Cadastre sua empresa (PJ)</a></div>
+  </section>
+</main>
