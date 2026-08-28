@@ -33,7 +33,14 @@ public enum ErrorEnum {
     DEPOSITO_NULO_ZERO(400, 202, "Valor do depósito deve ser maior que zero"),
     TIPO_TRANSACAO_INEXISTENTE(400, 203, "Tipo de transação inválido"),
     TRANSACAO_PIX_FALHA(500, 204, "Falha na transação PIX"),
-    TRANSACAO_MESMA_CONTA(400, 205, "Não é possível realizar uma transação na mesma conta");
+    TRANSACAO_MESMA_CONTA(400, 205, "Não é possível realizar uma transação na mesma conta"),
+    VALOR_TRANSFERENCIA_INVALIDO(400, 206, "O valor da transferência deve ser maior que zero"),
+    BANCO_NAO_SUPORTADO(400, 207, "Banco de destino não suportado"),
+    CONTA_DESTINO_NAO_EXISTE(404, 208, "Conta de destino não encontrada"),
+    DADOS_FAVORECIDO_INVALIDOS(422, 209, "Dados do favorecido não conferem"),
+    FORA_HORARIO_TRANSFERENCIA(422, 210, "Transferência fora do horário permitido ou em dia não útil"),
+    AGENDAMENTO_INVALIDO(400, 211, "Agendamento deve ser futuro e ocorrer em dia útil"),
+    LIMITE_TRANSFERENCIA_EXCEDIDO(422, 212, "Limite da transferência excedido");
 
     private final int httpStatus;
     private final int errorCode;

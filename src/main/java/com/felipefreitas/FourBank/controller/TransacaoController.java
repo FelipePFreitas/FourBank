@@ -1,6 +1,7 @@
 package com.felipefreitas.FourBank.controller;
 
 import com.felipefreitas.FourBank.dto.transacao.TransacaoResponseDTO;
+import com.felipefreitas.FourBank.dto.transacao.TransferenciaRequestDTO;
 import com.felipefreitas.FourBank.service.TransacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 
@@ -29,6 +31,22 @@ import java.math.BigDecimal;
 public class TransacaoController {
 
     private final TransacaoService transacaoService;
+
+    @PostMapping("/transferencias")
+    @PreAuthorize("isAuthenticated()")
+    @Operation(summary = "Realizar transferência", description = "Transfere ou agenda valor para uma conta FourBank existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Transferência concluída ou agendada",
+                    content = @Content(schema = @Schema(implementation = TransacaoResponseDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Não autenticado", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Transferência não permitida", content = @Content)
+    })
+    public ResponseEntity<TransacaoResponseDTO> transferir(
+            @AuthenticationPrincipal UserDetails user,
+            @RequestBody @jakarta.validation.Valid TransferenciaRequestDTO request) {
+        return ResponseEntity.ok(transacaoService.transferir(user.getUsername(), request));
+    }
 
     @PostMapping("/pix/{chavePix}/{valor}")
     @PreAuthorize("isAuthenticated()")

@@ -7,6 +7,7 @@ import com.felipefreitas.FourBank.dto.usuario.UsuarioResponseDTO;
 import com.felipefreitas.FourBank.entity.ClientePJEntity;
 import com.felipefreitas.FourBank.entity.EnderecosEntity;
 import com.felipefreitas.FourBank.entity.UsuarioEntity;
+import com.felipefreitas.FourBank.enums.ClienteTipo;
 import com.felipefreitas.FourBank.enums.ErrorEnum;
 import com.felipefreitas.FourBank.enums.StatusCliente;
 import com.felipefreitas.FourBank.exceptions.BaseExceptions;
@@ -75,6 +76,7 @@ public class ClientePJService {
         clientePJEntity.setCriadoEm(agora);
         clientePJEntity.setAtualizadoEm(agora);
         clientePJEntity.setStatusCliente(StatusCliente.ATIVO);
+        clientePJEntity.setClienteTipo(ClienteTipo.PESSOA_JURIDICA);
         clientePJEntity.setEndereco(endereco);
 
         ClientePJEntity clienteSalvo = clientePJRepository.save(clientePJEntity);

@@ -34,6 +34,8 @@ public class TransacaoEntity {
     @Column(nullable = false)
     private LocalDateTime criadoEm;
 
+    private LocalDateTime agendadaPara;
+
     @ManyToOne
     @JoinColumn(name = "conta_origem_id", referencedColumnName = "id")
     private ContaEntity contaOrigem;

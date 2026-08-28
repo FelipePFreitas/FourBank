@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.math.BigDecimal;
 import java.util.concurrent.ThreadLocalRandom;
@@ -69,6 +71,7 @@ public class ContaService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "contas", key = "#loginUsuarioAutenticado")
     public void cadastrarChavePix(String loginUsuarioAutenticado, String chavePix) {
         log.info("Iniciando cadastro de chave Pix para login={}", loginUsuarioAutenticado);
 
@@ -105,6 +108,7 @@ public class ContaService {
 
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "contas", key = "#loginUsuarioAutenticado", unless = "#result == null")
     public ContaResponseDTO consultarDadosConta(String loginUsuarioAutenticado) {
         log.info("Consultando dados da conta para login={}", loginUsuarioAutenticado);
 

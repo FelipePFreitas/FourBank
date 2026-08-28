@@ -5,7 +5,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://www.docker.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
 
-API REST para onboarding bancario (PF/PJ), autenticacao JWT, conta e transacoes Pix.
+API REST para onboarding bancario (PF/PJ), autenticacao JWT, contas e transacoes bancarias.
 
 ## Funcionalidades implementadas
 
@@ -15,8 +15,35 @@ API REST para onboarding bancario (PF/PJ), autenticacao JWT, conta e transacoes 
 - Cadastro de chave Pix da conta autenticada: `POST /contas/pix`
 - Consulta de dados da conta autenticada: `GET /contas`
 - Transferencia Pix: `POST /transacoes/pix/{chavePix}/{valor}`
+- Transferencia bancaria imediata ou agendada: `POST /transacoes/transferencias`
 - Tratamento centralizado de erros com `ProblemDetail`
 - Persistencia com Spring Data JPA (PostgreSQL)
+
+### Transferencia bancaria
+
+O endpoint `POST /transacoes/transferencias` exige JWT e recebe os dados do favorecido:
+
+```json
+{
+  "nome": "Maria da Silva",
+  "documento": "52998224725",
+  "banco": "FOURBANK",
+  "agencia": "0001",
+  "conta": "1234567",
+  "tipoConta": "CC",
+  "valor": 100.00,
+  "agendadaPara": null
+}
+```
+
+`tipoConta` aceita `CC` ou `CP`. O campo `agendadaPara` e opcional; quando informado,
+a data deve ser futura e cair em dia util. Transferencias imediatas sao processadas
+em dias uteis, das 08:00 as 17:00, no horario de Brasilia.
+
+As regras de saldo, limite, taxas e transferencias gratuitas sao aplicadas no service.
+Agendamentos sem saldo no momento da efetivacao sao cancelados. Cada transacao
+mantem a referencia das contas de origem e destino para auditoria, e os eventos
+principais sao registrados nos logs da aplicacao.
 
 ## Arquitetura
 
@@ -42,6 +69,22 @@ com.felipefreitas.FourBank
 - OpenAPI/Swagger (`springdoc-openapi`)
 - PostgreSQL, Redis e RabbitMQ
 - Docker Compose e Testcontainers
+
+## Redis e RabbitMQ
+
+O Redis e utilizado para:
+
+- Cache das consultas de conta com TTL de 5 minutos.
+- Invalidacao do cache apos alteracoes de saldo.
+- Idempotencia dos eventos recebidos do RabbitMQ por 24 horas.
+
+O RabbitMQ e utilizado para publicar eventos de transferencias concluidas
+apos o commit da transacao no PostgreSQL. A aplicacao consome esses eventos
+para auditoria e evita o processamento duplicado usando o Redis.
+
+- Exchange: `fourbank.transferencias`
+- Fila: `fourbank.transferencias.concluidas`
+- Routing key: `transferencia.concluida`
 
 ## Infra local (compose.yaml)
 
@@ -82,3 +125,22 @@ Demais rotas exigem JWT no header `Authorization` no formato Bearer token.
 ```bash
 .\mvnw test
 ```
+
+Para executar somente os testes unitarios dos services:
+
+```bash
+.\mvnw "-Dtest=TransacaoServiceTest,ContaServiceTest,ClientePFServiceTest,ClientePJServiceTest,AuthServiceTest" test
+```
+
+## Configuracao das transferencias
+
+Os valores abaixo podem ser sobrescritos por variaveis de ambiente:
+
+| Propriedade | Padrao | Descricao |
+| --- | --- | --- |
+| `TRANSFERENCIA_LIMITE` | `5000.00` | Limite por transferencia |
+| `TRANSFERENCIA_TAXA` | `2.00` | Taxa apos o limite de gratuidades |
+| `TRANSFERENCIA_GRATUITAS` | `3` | Quantidade diaria de transferencias sem taxa |
+| `TRANSFERENCIA_HORARIO_INICIAL` | `08:00` | Inicio do horario bancario |
+| `TRANSFERENCIA_HORARIO_FINAL` | `17:00` | Fim do horario bancario |
+| `TRANSFERENCIA_AGENDAMENTO_INTERVALO_MS` | `5000` | Intervalo do processador de agendamentos |
