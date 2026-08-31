@@ -14,6 +14,12 @@ export const routes: Routes = [
   },
   {
     path: '',
+    pathMatch: 'full',
+    loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
+    title: 'FourBank | Banco digital',
+  },
+  {
+    path: '',
     canActivate: [authGuard],
     loadComponent: () => import('./layout/shell.component').then((m) => m.ShellComponent),
     children: [

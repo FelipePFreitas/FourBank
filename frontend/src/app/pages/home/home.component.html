@@ -1,0 +1,58 @@
+<main class="home-page">
+  <header class="topbar">
+    <a class="brand" routerLink="/" aria-label="FourBank - página inicial">
+      <span class="brand-mark" aria-hidden="true">4</span>
+      <span>FourBank</span>
+    </a>
+    <nav class="top-actions" aria-label="Acessos da conta">
+      <a class="button button-light" routerLink="/cadastro" [queryParams]="{ tipo: 'pf' }">Abrir conta PF</a>
+      <a class="button button-light" routerLink="/cadastro" [queryParams]="{ tipo: 'pj' }">Abrir conta PJ</a>
+      <a class="button button-primary" routerLink="/login">Entrar na conta</a>
+    </nav>
+  </header>
+
+  <section class="hero" aria-labelledby="home-title">
+    <div class="hero-copy">
+      <p class="eyebrow">Seu banco digital</p>
+      <h1 id="home-title">Mais simples para você. Mais completo para o seu negócio.</h1>
+      <p class="hero-text">
+        Tenha uma conta segura, prática e feita para acompanhar todos os seus planos.
+        Cuide da sua vida financeira com o FourBank.
+      </p>
+    </div>
+    <div class="hero-card" aria-label="Resumo dos benefícios FourBank">
+      <p class="card-label">FourBank para todos</p>
+      <strong>Seu dinheiro no controle</strong>
+      <p>Organize suas finanças e acompanhe suas movimentações em um só lugar.</p>
+      <div class="card-line"></div>
+      <span class="card-status">Conta digital segura</span>
+    </div>
+  </section>
+
+  <section class="benefits" aria-labelledby="benefits-title">
+    <p class="eyebrow">Feito para facilitar</p>
+    <h2 id="benefits-title">Tudo o que você precisa para cuidar do seu dinheiro</h2>
+    <div class="benefit-grid">
+      <article class="benefit">
+        <span class="benefit-number" aria-hidden="true">01</span>
+        <h3>Conta do seu jeito</h3>
+        <p>Uma experiência simples para pessoas e empresas, com acesso quando precisar.</p>
+      </article>
+      <article class="benefit">
+        <span class="benefit-number" aria-hidden="true">02</span>
+        <h3>Controle em tempo real</h3>
+        <p>Consulte saldo, operações e histórico para tomar decisões com tranquilidade.</p>
+      </article>
+      <article class="benefit">
+        <span class="benefit-number" aria-hidden="true">03</span>
+        <h3>Segurança em primeiro lugar</h3>
+        <p>Seus dados e acessos protegidos para você movimentar sua conta com confiança.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>FourBank</span>
+    <span>Banco digital para seus próximos planos.</span>
+  </footer>
+</main>
