@@ -1,13 +1,15 @@
-import { Injectable, signal } from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { AuthTokenResponse, CadastroPFRequest, CadastroPJRequest } from './models';
+import {Router} from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apiUrl = '/api';
   private readonly tokenKey = 'fourbank_access_token';
   private readonly expirationKey = 'fourbank_token_expires_at';
+  private router = inject(Router);
   readonly token = signal<string | null>(this.tokenFromStorage());
 
   constructor(private readonly http: HttpClient) {}
@@ -34,6 +36,7 @@ export class AuthService {
     sessionStorage.removeItem(this.tokenKey);
     sessionStorage.removeItem(this.expirationKey);
     this.token.set(null);
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {
