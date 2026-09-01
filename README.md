@@ -2,8 +2,19 @@
 
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-brightgreen.svg)](https://spring.io/projects/spring-boot)
-[![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://www.docker.com/)
+[![Maven](https://img.shields.io/badge/Maven-C71A36.svg?logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![Angular](https://img.shields.io/badge/Angular-20-DD0031.svg?logo=angular&logoColor=white)](https://angular.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![RxJS](https://img.shields.io/badge/RxJS-7.8-B7178C.svg?logo=reactivex&logoColor=white)](https://rxjs.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
+[![Redis](https://img.shields.io/badge/Redis-7-DC382D.svg?logo=redis&logoColor=white)](https://redis.io/)
+[![RabbitMQ](https://img.shields.io/badge/RabbitMQ-3-FF6600.svg?logo=rabbitmq&logoColor=white)](https://www.rabbitmq.com/)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED.svg?logo=docker&logoColor=white)](https://www.docker.com/)
+[![OpenAPI](https://img.shields.io/badge/OpenAPI-3-6BA539.svg?logo=openapiinitiative&logoColor=white)](https://www.openapis.org/)
+[![JWT](https://img.shields.io/badge/JWT-Auth0-000000.svg?logo=jsonwebtokens&logoColor=white)](https://github.com/auth0/java-jwt)
+[![MapStruct](https://img.shields.io/badge/MapStruct-1.6.3-4A6B8A.svg)](https://mapstruct.org/)
+[![Lombok](https://img.shields.io/badge/Lombok-1.18.38-BD6F00.svg)](https://projectlombok.org/)
+[![Testcontainers](https://img.shields.io/badge/Testcontainers-1D4354.svg)](https://testcontainers.com/)
 
 API REST para onboarding bancario (PF/PJ), autenticacao JWT, contas e transacoes bancarias.
 
@@ -14,6 +25,8 @@ API REST para onboarding bancario (PF/PJ), autenticacao JWT, contas e transacoes
 - Login com emissao de JWT: `POST /auth/login`
 - Cadastro de chave Pix da conta autenticada: `POST /contas/pix`
 - Consulta de dados da conta autenticada: `GET /contas`
+- Deposito na conta autenticada: `POST /transacoes/deposito/{valor}`
+- Saque da conta autenticada: `POST /transacoes/saque/{valor}`
 - Transferencia Pix: `POST /transacoes/pix/{chavePix}/{valor}`
 - Transferencia bancaria imediata ou agendada: `POST /transacoes/transferencias`
 - Tratamento centralizado de erros com `ProblemDetail`
@@ -64,11 +77,15 @@ com.felipefreitas.FourBank
 ## Stack tecnica
 
 - Java 21
-- Spring Boot (Web, Data JPA, Security, Validation, Actuator)
+- Spring Boot 4.1.0 (Web, Data JPA, Security, Validation, Cache, AMQP e Actuator)
 - JWT (Auth0 `java-jwt`)
 - OpenAPI/Swagger (`springdoc-openapi`)
+- MapStruct e Lombok
 - PostgreSQL, Redis e RabbitMQ
-- Docker Compose e Testcontainers
+- Micrometer Prometheus
+- Docker Compose e Testcontainers (PostgreSQL e RabbitMQ)
+- Frontend Angular 20 standalone, TypeScript 5.9, Reactive Forms e RxJS
+- Testes do frontend com Jasmine e Karma
 
 ## Redis e RabbitMQ
 
@@ -116,9 +133,11 @@ Endpoints publicos:
 - `POST /auth/login`
 - `POST /clientes/pf`
 - `POST /clientes/pj`
+- `GET /actuator/health`
+- `GET /actuator/info`
 - Rotas de documentacao (`/swagger-ui/**`, `/v3/api-docs/**`)
 
-Demais rotas exigem JWT no header `Authorization` no formato Bearer token.
+Demais rotas exigem JWT no header `Authorization` no formato `Bearer <token>`.
 
 ## Testes
 
