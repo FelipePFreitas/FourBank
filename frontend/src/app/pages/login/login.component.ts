@@ -29,4 +29,8 @@ export class LoginComponent {
       error: (error) => { this.loading.set(false); this.error.set(error?.error?.detail ?? 'Não foi possível entrar. Confira seus dados.'); },
     });
   }
+
+  protected voltarParaPaginaInicial() {
+    this.router.navigate(['/home']);
+  }
 }
