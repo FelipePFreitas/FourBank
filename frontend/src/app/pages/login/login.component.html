@@ -1,5 +1,4 @@
 <main class="login-page">
-  <button class="back_home" type="button" (click)="voltarParaPaginaInicial()">Página inicial</button>
   <section class="login-card" aria-labelledby="login-title">
     <div class="logo">4</div>
     <p class="eyebrow">Banco digital</p>
@@ -24,4 +23,5 @@
       <button class="primary" type="submit" [disabled]="loading()">{{ loading() ? 'Entrando...' : 'Entrar' }}</button>
     </form>
   </section>
+  <a class="back_home" routerLink="/home">Voltar para pagina inicial</a>
 </main>
